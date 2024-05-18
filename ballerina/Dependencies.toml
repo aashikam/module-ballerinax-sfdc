@@ -399,7 +399,6 @@ dependencies = [
 modules = [
 	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce"},
 	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce.bulk"},
-	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce.events"},
 	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce.soap"},
 	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce.utils"}
 ]
