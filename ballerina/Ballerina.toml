@@ -51,3 +51,6 @@ path = "./lib/jetty-util-9.4.18.v20190429.jar"
 
 [[platform.java17.dependency]]
 path = "./lib/jetty-util-ajax-9.4.18.v20190429.jar"
+
+[[platform.java17.dependency]]
+path = "./lib/json-20210307.jar"
