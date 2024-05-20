@@ -62,5 +62,5 @@ path = "./lib/jackson-databind-2.9.10.8.jar"
 path = "./lib/jackson-annotations-2.9.10.jar"
 
 [[platform.java17.dependency]]
-path = "./lib/jackson-core-2.9.10.jarr"
+path = "./lib/jackson-core-2.9.10.jar"
 
