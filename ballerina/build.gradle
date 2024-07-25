@@ -65,6 +65,7 @@ configurations {
 
 dependencies {
     externalJars(group: 'com.opencsv', name: 'opencsv', version: '5.9')
+    externalJars(group: 'org.cometd.java', name: 'cometd-java-client', version: '4.0.4')
 }
 
 task commitTomlFiles {

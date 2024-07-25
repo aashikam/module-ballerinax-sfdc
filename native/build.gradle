@@ -43,7 +43,7 @@ dependencies {
     checkstyle "com.puppycrawl.tools:checkstyle:${checkstylePluginVersion}"
     implementation "com.opencsv:opencsv:${openCsvVersion}"
     implementation group: 'org.ballerinalang', name: 'ballerina-runtime', version: "${ballerinaLangVersion}"
-
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.32'
 }
 
 tasks.withType(JavaCompile) {
@@ -120,6 +120,9 @@ checkstyleMain.dependsOn ':checkstyle:downloadCheckstyleRuleFiles'
 
 shadowJar {
     configurations = [project.configurations.shadow]
+    dependencies {
+        exclude(dependency('org.slf4j:.*:.*'))
+    }
 }
 
 build.dependsOn(shadowJar)
