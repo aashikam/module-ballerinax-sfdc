@@ -27,3 +27,12 @@ groupId = "com.opencsv"
 artifactId = "opencsv"
 version = "5.9"
 path = "./lib/opencsv-5.9.jar"
+
+[[platform.java17.dependency]]
+path = "./lib/bayeux-api-4.0.4.jar"
+
+[[platform.java17.dependency]]
+path = "./lib/cometd-java-client-4.0.4.jar"
+
+[[platform.java17.dependency]]
+path = "./lib/cometd-java-common-4.0.4.jar"
