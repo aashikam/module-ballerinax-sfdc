@@ -41,7 +41,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "crypto"
-version = "2.6.2"
+version = "2.6.3"
 dependencies = [
 	{org = "ballerina", name = "jballerina.java"},
 	{org = "ballerina", name = "time"}
@@ -61,7 +61,7 @@ dependencies = [
 [[package]]
 org = "ballerina"
 name = "http"
-version = "2.10.13"
+version = "2.10.15"
 dependencies = [
 	{org = "ballerina", name = "auth"},
 	{org = "ballerina", name = "cache"},
@@ -377,7 +377,7 @@ modules = [
 [[package]]
 org = "ballerinax"
 name = "salesforce"
-version = "8.0.2"
+version = "8.1.0"
 dependencies = [
 	{org = "ballerina", name = "http"},
 	{org = "ballerina", name = "io"},
@@ -398,7 +398,9 @@ dependencies = [
 ]
 modules = [
 	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce"},
+	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce.apex"},
 	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce.bulk"},
+	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce.bulkv2"},
 	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce.soap"},
 	{org = "ballerinax", packageName = "salesforce", moduleName = "salesforce.utils"}
 ]
