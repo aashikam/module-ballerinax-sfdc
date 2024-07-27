@@ -66,6 +66,14 @@ configurations {
 dependencies {
     externalJars(group: 'com.opencsv', name: 'opencsv', version: '5.9')
     externalJars(group: 'org.cometd.java', name: 'cometd-java-client', version: '4.0.4')
+    // Jetty dependencies
+    externalJars(group: 'org.json', name: 'json', version: '20210307')
+    externalJars(group: 'org.eclipse.jetty', name: 'jetty-client', version: '9.4.18.v20190429')
+    externalJars(group: 'org.eclipse.jetty', name: 'jetty-http', version: '9.4.18.v20190429')
+    externalJars(group: 'org.eclipse.jetty', name: 'jetty-io', version: '9.4.18.v20190429')
+    externalJars(group: 'org.eclipse.jetty', name: 'jetty-util', version: '9.4.18.v20190429')
+    externalJars(group: 'org.eclipse.jetty', name: 'jetty-util-ajax', version: '9.4.18.v20190429')
+    externalJars(group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.10.8')
 }
 
 task commitTomlFiles {
