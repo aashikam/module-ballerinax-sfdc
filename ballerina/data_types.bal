@@ -14,47 +14,32 @@
 // specific language governing permissions and limitations
 // under the License.
 
-# Salesforce listener configuration.
-# 
-# + username - Salesforce login username
-# + password - Salesforce login password appended with the security token (<password><security token>)
-# + channelName - The channel name to which a client can subscribe to receive event notifications
-# + replayFrom - The replay ID to change the point in time when events are read
-#   - `-1` - Get all new events sent after subscription. This option is the default
-#   - `-2` - Get all new events sent after subscription and all past events within the retention window
-#   - `Specific number` - Get all events that occurred after the event with the specified replay ID
-# + environment - The type of salesforce environment
-#   - `PRODUCTION` - Production environment
-#   - `SANDBOX` - Sandbox environment
-#   - `DEVELOPER` - Developer environment
-@display{label: "Listener Config"}
-public type ListenerConfig record {|
-    @display{label: "Username", "description": "Salesforce login username"}
+# Configurations related to authentication.
+#
+# + username - Username to use for authentication
+# + password - Password/secret/token to use for authentication
+public type CredentialsConfig record {|
     string username;
-    @display{label: "Password", "description": "Salesforce login password appended with the security token (<password><security token>)"}
     string password;
-    @display{label: "Channel Name", "description": "The channel name to which a client can subscribe to receive event notifications"}
-    string channelName;
-    @display{label: "Replay ID", "description": "The replay ID to change the point in time when events are read"}
-    int replayFrom = REPLAY_FROM_TIP;
-    @display{label: "Environment", "description": "The type of Salesforce environment"}
-    string environment = PRODUCTION;
 |};
 
-# The type of Salesforce environment
-# + PRODUCTION - Production environment
-# + SANDBOX - Sandbox environment
-# + DEVELOPER - Developer environment
-public enum Organization {
-    PRODUCTION = "Production",
-    DEVELOPER = "Developer",
-    SANDBOX = "Sandbox"
-}
+# Salesforce listener configuration.
+# 
+# + auth - Configurations related to username/password authentication
+# + replayFrom - The replay ID to change the point in time when events are read
+# + isSandBox - The type of salesforce environment, if sandbox environment or not
+public type ListenerConfig record {|
+    CredentialsConfig auth;
+    int|ReplayOptions replayFrom = REPLAY_FROM_TIP;
+    boolean isSandBox = false;
+|};
 
 # Replay ID `-1` to get all new events sent after subscription. This option is the default
-public const REPLAY_FROM_TIP = -1;
 # Replay ID `-2` to get all new events sent after subscription and all past events within the retention window
-public const REPLAY_FROM_EARLIEST = -2;
+public enum ReplayOptions {
+   REPLAY_FROM_TIP,
+   REPLAY_FROM_EARLIEST
+}
 
 #  Contains data returned from a Change Data Event.
 #

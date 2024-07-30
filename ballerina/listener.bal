@@ -21,24 +21,28 @@ handle JAVA_NULL = java:createNull();
 # Ballerina Salesforce Listener connector provides the capability to receive notifications from Salesforce.  
 @display {label: "Salesforce", iconPath: "docs/icon.png"}
 public class Listener {
-    private handle username = JAVA_NULL;
-    private handle password = JAVA_NULL;
-    private handle channelName = JAVA_NULL;
-    private handle replayFrom = JAVA_NULL;
-    private handle environment = JAVA_NULL;
+    private string username;
+    private string password;
+    private string? channelName = ();
+    private int replayFrom;
+    private boolean isSandBox;
 
     # Gets invoked to initialize the `listener`.
     # The liatener initialization requires setting the credentials.
     # Create an [Salesforce Account](https://www.salesforce.com/ap/?ir=1) and obtain tokens by following [this guide](https://developer.salesforce.com/docs/atlas.en-us.api_streaming.meta/api_streaming/code_sample_java_add_source.htm).
     #
     # + listenerConfig - Salesforce Listener configuration
-    public function init(ListenerConfig listenerConfig) {
-        self.username = java:fromString(listenerConfig.username);
-        self.password = java:fromString(listenerConfig.password);
-        self.channelName = java:fromString(listenerConfig.channelName);
-        self.replayFrom = java:fromString(listenerConfig.replayFrom.toString());
-        self.environment = java:fromString(listenerConfig.environment.toString());
-        initListener(self, self.replayFrom, self.channelName, self.environment);    
+    public function init(*ListenerConfig listenerConfig) {
+        self.username = listenerConfig.auth.username;
+        self.password = listenerConfig.auth.username;
+        if listenerConfig.replayFrom is REPLAY_FROM_TIP {
+            self.replayFrom = -1;
+        } else {
+            self.replayFrom = -2;
+        }
+        
+        self.isSandBox = listenerConfig.isSandBox;
+        initListener(self, self.replayFrom, self.isSandBox);    
     }
 
     # Attaches the service to the `sfdc:Listener` endpoint.
@@ -47,7 +51,15 @@ public class Listener {
     # + name - Name of the service
     # + return - `()` or else a `error` upon failure to register the service
     public function attach(Service s, string[]|string? name) returns error? {
-        return attachService(self, s);
+        if name is string {
+            self.channelName = name;
+        } else if name is string[] {
+            self.channelName = name[0];
+        } else {
+            return error("Invalid channel name.!"); // todo
+        }
+        
+        return attachService(self, s, self.channelName);
     }
 
     # Starts the subscription and listen to events on all the attached services.
@@ -80,17 +92,17 @@ public class Listener {
     }
 }
 
-function initListener(Listener instance, handle replayFrom, handle channelName, handle environment) = 
+function initListener(Listener instance, int replayFrom, boolean isSandBox) = 
 @java:Method {
     'class: "io.ballerinax.salesforce.ListenerUtil"
 } external;
 
-function attachService(Listener instance, Service s) returns error? =
+function attachService(Listener instance, Service s, string? channelName) returns error? =
 @java:Method {
     'class: "io.ballerinax.salesforce.ListenerUtil"
 } external;
 
-function startListener(handle username, handle password, Listener instance) returns error? =
+function startListener(string username, string password, Listener instance) returns error? =
 @java:Method {
     'class: "io.ballerinax.salesforce.ListenerUtil"
 } external;

@@ -22,6 +22,7 @@ import io.ballerina.runtime.api.creators.ErrorCreator;
 import io.ballerina.runtime.api.utils.StringUtils;
 import io.ballerina.runtime.api.values.BError;
 import io.ballerina.runtime.api.values.BObject;
+import io.ballerina.runtime.api.values.BString;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -30,7 +31,7 @@ import java.util.function.Consumer;
 
 import static io.ballerinax.salesforce.Constants.CHANNEL_NAME;
 import static io.ballerinax.salesforce.Constants.CONSUMER_SERVICES;
-import static io.ballerinax.salesforce.Constants.ENVIRONMENT;
+import static io.ballerinax.salesforce.Constants.IS_SAND_BOX;
 import static io.ballerinax.salesforce.Constants.REPLAY_FROM;
 import static org.cometd.bayeux.Channel.META_CONNECT;
 import static org.cometd.bayeux.Channel.META_DISCONNECT;
@@ -48,14 +49,14 @@ public class ListenerUtil {
     private static EmpConnector connector;
     private static TopicSubscription subscription;
 
-    public static void initListener(BObject listener, String replayFrom, String channelName, String environment) {
+    public static void initListener(BObject listener, int replayFrom, boolean isSandBox) {
         listener.addNativeData(CONSUMER_SERVICES, services);
         listener.addNativeData(REPLAY_FROM, replayFrom);
-        listener.addNativeData(CHANNEL_NAME, channelName);
-        listener.addNativeData(ENVIRONMENT, environment);
+        listener.addNativeData(IS_SAND_BOX, isSandBox);
     }
 
-    public static Object attachService(BObject listener, BObject service) {
+    public static Object attachService(BObject listener, BObject service, Object channelName) {
+        listener.addNativeData(CHANNEL_NAME, ((BString) channelName).getValue());
         @SuppressWarnings("unchecked")
         ArrayList<BObject> services =
                 (ArrayList<BObject>) listener.getNativeData(CONSUMER_SERVICES);
@@ -66,10 +67,10 @@ public class ListenerUtil {
         return null;
     }
 
-    public static Object startListener(Environment environment, String username, String password, BObject listener) {
+    public static Object startListener(Environment environment, BString username, BString password, BObject listener) {
         BearerTokenProvider tokenProvider = new BearerTokenProvider(() -> {
             try {
-                return LoginHelper.login(username, password, listener);
+                return LoginHelper.login(username.getValue(), password.getValue(), listener);
             } catch (Exception e) {
                 throw sfdcError(e.getMessage());
             }
@@ -98,7 +99,7 @@ public class ListenerUtil {
                 (ArrayList<BObject>) listener.getNativeData(CONSUMER_SERVICES);
         for (BObject service : services) {
             String channelName = listener.getNativeData(CHANNEL_NAME).toString();
-            long replayFrom =  Long.parseLong(listener.getNativeData(REPLAY_FROM).toString());
+            long replayFrom  = (Integer) listener.getNativeData(REPLAY_FROM);
             Consumer<Map<String, Object>> consumer = event -> injectEvent(service, runtime, event);
             try {
                 subscription = connector.subscribe(channelName, replayFrom, consumer).get(5, TimeUnit.SECONDS);

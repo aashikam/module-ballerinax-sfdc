@@ -21,8 +21,7 @@ import java.nio.ByteBuffer;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import static io.ballerinax.salesforce.Constants.ENVIRONMENT;
-import static io.ballerinax.salesforce.Constants.SANDBOX;
+import static io.ballerinax.salesforce.Constants.IS_SAND_BOX;
 
 /**
  * A helper to obtain the Authentication bearer token via login.
@@ -97,7 +96,8 @@ public class LoginHelper {
     private static final String SERVICES_SOAP_PARTNER_ENDPOINT = "/services/Soap/u/44.0/";
 
     public static BayeuxParameters login(String username, String password, BObject listener) throws Exception {
-        return login(new URL(getLoginEndpoint(listener.getNativeData(ENVIRONMENT).toString())), username, password);
+        boolean isSandBox = (Boolean) listener.getNativeData(IS_SAND_BOX);
+        return login(new URL(getLoginEndpoint(isSandBox)), username, password);
     }
 
     public static BayeuxParameters login(String username, String password, BayeuxParameters params) throws Exception {
@@ -178,8 +178,8 @@ public class LoginHelper {
                 + password + "</urn:password>" + "  </urn:login>" + ENV_END).getBytes("UTF-8");
     }
 
-    private static String getLoginEndpoint(String environment) {
-        if (SANDBOX.equals(environment)) {
+    private static String getLoginEndpoint(boolean isSandBox) {
+        if (isSandBox) {
             return TEST_LOGIN_ENDPOINT;
         }
         return LOGIN_ENDPOINT;
