@@ -89,8 +89,8 @@ public class LoginHelper {
     private static final String ENV_END = "</soapenv:Body></soapenv:Envelope>";
     private static final String ENV_START =
             "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' "
-            + "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
-            + "xmlns:urn='urn:partner.soap.sforce.com'><soapenv:Body>";
+                    + "xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' "
+                    + "xmlns:urn='urn:partner.soap.sforce.com'><soapenv:Body>";
 
     // The enterprise SOAP API endpoint used for the login call
     private static final String SERVICES_SOAP_PARTNER_ENDPOINT = "/services/Soap/u/44.0/";

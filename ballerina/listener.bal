@@ -1,6 +1,6 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2024 WSO2 LLC. (http://www.wso2.org).
 //
-// WSO2 Inc. licenses this file to you under the Apache License,
+// WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License.
 // You may obtain a copy of the License at
@@ -27,15 +27,16 @@ public class Listener {
     private int replayFrom;
     private boolean isSandBox;
 
-    # Gets invoked to initialize the `listener`.
-    # The liatener initialization requires setting the credentials.
-    # Create an [Salesforce Account](https://www.salesforce.com/ap/?ir=1) and obtain tokens by following [this guide](https://developer.salesforce.com/docs/atlas.en-us.api_streaming.meta/api_streaming/code_sample_java_add_source.htm).
+
+    # Initializes the listener. During initialization you can set the credentials.
+    # Create a Salesforce account and obtain tokens following [this guide](https://help.salesforce.com/articleView?id=remoteaccess_authenticate_overview.htm).
     #
     # + listenerConfig - Salesforce Listener configuration
     public function init(*ListenerConfig listenerConfig) {
         self.username = listenerConfig.auth.username;
         self.password = listenerConfig.auth.password;
         if listenerConfig.replayFrom is REPLAY_FROM_TIP {
+            // internal detail (-1 and -2)
             self.replayFrom = -1;
         } else {
             self.replayFrom = -2;
@@ -45,7 +46,7 @@ public class Listener {
         initListener(self, self.replayFrom, self.isSandBox);    
     }
 
-    # Attaches the service to the `sfdc:Listener` endpoint.
+    # Attaches the service to the `salesforce:Listener` endpoint.
     #
     # + s - Type descriptor of the service
     # + name - Name of the service
@@ -56,7 +57,7 @@ public class Listener {
         } else if name is string[] {
             self.channelName = name[0];
         } else {
-            return error("Invalid channel name.!"); // todo
+            return error("Invalid channel name."); 
         }
         
         return attachService(self, s, self.channelName);
@@ -69,7 +70,7 @@ public class Listener {
         return startListener(self.username, self.password, self);
     }
 
-    # Stops subscription and detaches the service from the `sfdc:Listener` endpoint.
+    # Stops subscription and detaches the service from the `salesforce:Listener` endpoint.
     #
     # + s - Type descriptor of the service
     # + return - `()` or else a `error` upon failure to detach the service

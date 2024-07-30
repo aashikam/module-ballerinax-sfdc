@@ -1,6 +1,6 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+// Copyright (c) 2024 WSO2 LLC. (http://www.wso2.org).
 //
-// WSO2 Inc. licenses this file to you under the Apache License,
+// WSO2 LLC. licenses this file to you under the Apache License,
 // Version 2.0 (the "License"); you may not use this file except
 // in compliance with the License.
 // You may obtain a copy of the License at
@@ -16,8 +16,8 @@
 
 # Configurations related to authentication.
 #
-# + username - Username to use for authentication
-# + password - Password/secret/token to use for authentication
+# + username - Salesforce login username
+# + password - Salesforce login password appended with the security token (<password><security token>)
 public type CredentialsConfig record {|
     string username;
     string password;
@@ -34,8 +34,10 @@ public type ListenerConfig record {|
     boolean isSandBox = false;
 |};
 
-# Replay ID `-1` to get all new events sent after subscription. This option is the default
-# Replay ID `-2` to get all new events sent after subscription and all past events within the retention window
+# The replay options representing the point in time when events are read.
+#
+# + REPLAY_FROM_TIP - To get all new events sent after subscription. This option is the default
+# + REPLAY_FROM_EARLIEST - To get all new events sent after subscription and all past events within the retention window
 public enum ReplayOptions {
    REPLAY_FROM_TIP,
    REPLAY_FROM_EARLIEST

@@ -1,18 +1,21 @@
-// Copyright (c) 2021 WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
-//
-// WSO2 Inc. licenses this file to you under the Apache License,
-// Version 2.0 (the "License"); you may not use this file except
-// in compliance with the License.
-// You may obtain a copy of the License at
-//
-// http://www.apache.org/licenses/LICENSE-2.0
-//
-// Unless required by applicable law or agreed to in writing,
-// software distributed under the License is distributed on an
-// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-// KIND, either express or implied.  See the License for the
-// specific language governing permissions and limitations
-// under the License.
+/*
+ * Copyright (c) 2024 WSO2 LLC. (http://www.wso2.org).
+ *
+ * WSO2 LLC. licenses this file to you under the Apache License,
+ * Version 2.0 (the "License"); you may not use this file except
+ * in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ *
+ */
 
 package io.ballerinax.salesforce;
 
@@ -33,15 +36,9 @@ import static io.ballerinax.salesforce.Constants.CHANNEL_NAME;
 import static io.ballerinax.salesforce.Constants.CONSUMER_SERVICES;
 import static io.ballerinax.salesforce.Constants.IS_SAND_BOX;
 import static io.ballerinax.salesforce.Constants.REPLAY_FROM;
-import static org.cometd.bayeux.Channel.META_CONNECT;
-import static org.cometd.bayeux.Channel.META_DISCONNECT;
-import static org.cometd.bayeux.Channel.META_HANDSHAKE;
-import static org.cometd.bayeux.Channel.META_SUBSCRIBE;
-import static org.cometd.bayeux.Channel.META_UNSUBSCRIBE;
-
 
 /**
- * Util class containing the java external functions for Salesforce Ballerina trigger.
+ * Util class containing the java external functions for Ballerina Salesforce listener.
  */
 public class ListenerUtil {
     private static final ArrayList<BObject> services = new ArrayList<>();
@@ -82,12 +79,6 @@ public class ListenerUtil {
             throw sfdcError(e.getMessage());
         }
         connector = new EmpConnector(params);
-        LoggingListener loggingListener = new LoggingListener(true, true);
-        connector.addListener(META_CONNECT, loggingListener)
-                .addListener(META_DISCONNECT, loggingListener)
-                .addListener(META_HANDSHAKE, loggingListener)
-                .addListener(META_SUBSCRIBE, loggingListener)
-                .addListener(META_UNSUBSCRIBE, loggingListener);
         try {
             connector.start().get(5, TimeUnit.SECONDS);
         } catch (Exception e) {
@@ -99,7 +90,7 @@ public class ListenerUtil {
                 (ArrayList<BObject>) listener.getNativeData(CONSUMER_SERVICES);
         for (BObject service : services) {
             String channelName = listener.getNativeData(CHANNEL_NAME).toString();
-            long replayFrom  = (Integer) listener.getNativeData(REPLAY_FROM);
+            long replayFrom = (Integer) listener.getNativeData(REPLAY_FROM);
             Consumer<Map<String, Object>> consumer = event -> injectEvent(service, runtime, event);
             try {
                 subscription = connector.subscribe(channelName, replayFrom, consumer).get(5, TimeUnit.SECONDS);

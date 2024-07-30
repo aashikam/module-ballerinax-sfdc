@@ -15,6 +15,7 @@ observabilityIncluded = true
 
 [platform.java17]
 graalvmCompatible = true
+
 [[platform.java17.dependency]]
 path = "../native/build/libs/salesforce-native-8.1.0-SNAPSHOT.jar"
 groupId = "io.ballerinax"

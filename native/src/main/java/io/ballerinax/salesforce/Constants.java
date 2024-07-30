@@ -1,7 +1,7 @@
 /*
- * Copyright (c) 2021, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * Copyright (c) 2024 WSO2 LLC. (http://www.wso2.org).
  *
- * WSO2 Inc. licenses this file to you under the Apache License,
+ * WSO2 LLC. licenses this file to you under the Apache License,
  * Version 2.0 (the "License"); you may not use this file except
  * in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@
 package io.ballerinax.salesforce;
 
 /**
- * Constants for sfdc trigger implementation.
+ * Constants for Salesforce listener implementation.
  */
 public class Constants {
     public static final String CONSUMER_SERVICES = "consumer_services";
@@ -53,8 +53,6 @@ public class Constants {
     public static final String CREATE = "CREATE";
     public static final String DELETE = "DELETE";
     public static final String UNDELETE = "UNDELETE";
-
-    public static final String SFDC_ERROR = "SFDC_Error";
-
+    
     public static final String IS_SAND_BOX = "isSandBox";
 }
