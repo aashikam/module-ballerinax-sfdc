@@ -34,7 +34,7 @@ public class Listener {
     # + listenerConfig - Salesforce Listener configuration
     public function init(*ListenerConfig listenerConfig) {
         self.username = listenerConfig.auth.username;
-        self.password = listenerConfig.auth.username;
+        self.password = listenerConfig.auth.password;
         if listenerConfig.replayFrom is REPLAY_FROM_TIP {
             self.replayFrom = -1;
         } else {

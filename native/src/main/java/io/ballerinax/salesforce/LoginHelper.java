@@ -97,7 +97,8 @@ public class LoginHelper {
 
     public static BayeuxParameters login(String username, String password, BObject listener) throws Exception {
         boolean isSandBox = (Boolean) listener.getNativeData(IS_SAND_BOX);
-        return login(new URL(getLoginEndpoint(isSandBox)), username, password);
+        String endpoint = getLoginEndpoint(isSandBox);
+        return login(new URL(endpoint), username, password);
     }
 
     public static BayeuxParameters login(String username, String password, BayeuxParameters params) throws Exception {
